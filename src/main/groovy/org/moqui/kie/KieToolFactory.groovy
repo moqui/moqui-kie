@@ -79,7 +79,7 @@ class KieToolFactory implements ToolFactory<KieToolFactory> {
     void preFacadeInit(ExecutionContextFactory ecf) { }
 
     @Override
-    KieToolFactory getInstance() {
+    KieToolFactory getInstance(Object... parameters) {
         if (services == null) throw new IllegalStateException("KieToolFactory not initialized")
         return this
     }

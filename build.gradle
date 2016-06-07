@@ -1,0 +1,77 @@
+/*
+ * This software is in the public domain under CC0 1.0 Universal plus a 
+ * Grant of Patent License.
+ * 
+ * To the extent possible under law, the author(s) have dedicated all
+ * copyright and related and neighboring rights to this software to the
+ * public domain worldwide. This software is distributed without any
+ * warranty.
+ * 
+ * You should have received a copy of the CC0 Public Domain Dedication
+ * along with this software (see the LICENSE.md file). If not, see
+ * <http://creativecommons.org/publicdomain/zero/1.0/>.
+ */
+
+apply plugin: 'groovy'
+
+sourceCompatibility = '1.7'
+version = '1.0.0'
+def jarBaseName = 'moqui-kie'
+def moquiDir = projectDir.parentFile.parentFile.parentFile
+def frameworkDir = file(moquiDir.absolutePath + '/framework')
+
+// to run use "gradle dependencyUpdates"
+apply plugin: 'com.github.ben-manes.versions'
+buildscript {
+  repositories { jcenter() }
+  dependencies { classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0' }
+}
+repositories {
+    flatDir name: 'localLib', dirs: frameworkDir.absolutePath + '/lib'
+    jcenter()
+}
+
+dependencies {
+    compile project(':framework')
+
+    // KIE Libraries: Drools/jBPM/etc
+    compile 'org.kie:kie-api:6.4.0.Final' // Apache 2.0
+    compile 'org.drools:drools-core:6.4.0.Final' // Apache 2.0
+    compile 'org.drools:drools-jsr94:6.4.0.Final' // Apache 2.0
+    // another big mess drools-compiler depends on a bunch of stuff, including xstream which depends on xmlpull which is
+    //     included in xpp3:xpp3_min, ie redundant classes; so bunch of manual dependencies
+    compile module('org.drools:drools-compiler:6.4.0.Final') // Apache 2.0
+    runtime 'org.antlr:antlr-runtime:3.5.2'
+    runtime 'org.mvel:mvel2:2.2.8.Final'
+    runtime module('com.thoughtworks.xstream:xstream:1.4.9')
+    runtime 'xpp3:xpp3_min:1.1.4c' // leave out xmlpull here
+    runtime 'com.google.protobuf:protobuf-java:2.6.1'
+    // NOTE: drools java dialect options include ECLIPSE, JANINO, and NATIVE; NATIVE would be good but broken now with Java 8
+    // using older version of Janino (2.5.16) as it is the latest version Drools supports
+    runtime 'org.codehaus.janino:janino:2.5.16' // New BSD
+    // 'org.codehaus.janino:janino:2.7.8', 'org.codehaus.janino:commons-compiler:2.7.8', 'org.codehaus.janino:commons-compiler-jdk:2.7.8'
+    // ECJ latest works fine with Drools but is much bigger/etc and so far we are using mvel and not java dialect anyway
+    // runtime 'org.eclipse.jdt.core.compiler:ecj:4.5.1'
+    compile ('org.drools:drools-decisiontables:6.4.0.Final') { // Apache 2.0
+        exclude group: 'org.apache.poi'
+    }
+    compile 'org.apache.poi:poi:3.13'
+    // NOTE: org.apache.poi:poi-ooxml-schemas is a required dependency for drools-decisiontables (through poi-ooxml), but it's a huge file and runs fine without it
+    compile module('org.apache.poi:poi-ooxml:3.13')
+}
+
+// by default the Java plugin runs test on build, change to not do that (only run test if explicit task)
+check.dependsOn.remove(test)
+task cleanLib(type: Delete) { delete fileTree(dir: projectDir.absolutePath+'/lib', include: '*') }
+clean.dependsOn cleanLib
+
+jar {
+    destinationDir = file(projectDir.absolutePath + '/lib')
+    baseName = jarBaseName
+}
+task copyDependencies << {
+    copy { from (configurations.runtime - project(':framework').configurations.runtime - project(':framework').jar.archivePath)
+        into file(projectDir.absolutePath + '/lib') }
+}
+copyDependencies.dependsOn cleanLib
+jar.dependsOn copyDependencies

@@ -33,11 +33,15 @@ dependencyUpdates.resolutionStrategy = { componentSelection { rules -> rules.all
 
 repositories {
     flatDir name: 'localLib', dirs: frameworkDir.absolutePath + '/lib'
+    flatDir name: 'librepo', dirs: projectDir.absolutePath + '/librepo'
     jcenter()
 }
 
 dependencies {
     compile project(':framework')
+
+    // javax.rules, needed for Drools
+    compile 'jsr94:jsr94:1.1' // ???
 
     // KIE Libraries: Drools/jBPM/etc
     compile 'org.kie:kie-api:6.4.0.Final' // Apache 2.0

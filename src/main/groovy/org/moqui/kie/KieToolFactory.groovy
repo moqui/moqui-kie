@@ -141,17 +141,6 @@ class KieToolFactory implements ToolFactory<KieToolFactory> {
             return null
         }
 
-        /*
-        if (componentName == "mantle-usl") {
-            SpreadsheetCompiler sc = new SpreadsheetCompiler()
-            String drl = sc.compile(getResourceFacade().getLocationStream("component://mantle-usl/kie/src/main/resources/mantle/shipment/orderrate/OrderShippingDt.xls"), InputType.XLS)
-            StringBuilder groovyWithLines = new StringBuilder()
-            int lineNo = 1
-            for (String line in drl.split("\n")) groovyWithLines.append(lineNo++).append(" : ").append(line).append("\n")
-            logger.error("XLS DC as DRL: [\n${groovyWithLines}\n]")
-        }
-        */
-
         try {
             File kieDir = new File(kieRr.getUrl().getPath())
             KieBuilder builder = services.newKieBuilder(kieDir)

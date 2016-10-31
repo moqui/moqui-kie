@@ -45,12 +45,12 @@ dependencies {
     compile 'jsr94:jsr94:1.1' // ???
 
     // KIE Libraries: Drools/jBPM/etc
-    compile 'org.kie:kie-api:6.4.0.Final' // Apache 2.0
-    compile 'org.drools:drools-core:6.4.0.Final' // Apache 2.0
-    compile 'org.drools:drools-jsr94:6.4.0.Final' // Apache 2.0
+    compile 'org.kie:kie-api:6.5.0.Final' // Apache 2.0
+    compile 'org.drools:drools-core:6.5.0.Final' // Apache 2.0
+    compile 'org.drools:drools-jsr94:6.5.0.Final' // Apache 2.0
     // another big mess drools-compiler depends on a bunch of stuff, including xstream which depends on xmlpull which is
     //     included in xpp3:xpp3_min, ie redundant classes; so bunch of manual dependencies
-    compile module('org.drools:drools-compiler:6.4.0.Final') // Apache 2.0
+    compile module('org.drools:drools-compiler:6.5.0.Final') // Apache 2.0
     runtime 'org.antlr:antlr-runtime:3.5.2'
     runtime 'org.mvel:mvel2:2.3.1.Final'
     runtime module('com.thoughtworks.xstream:xstream:1.4.9')
@@ -62,7 +62,7 @@ dependencies {
     // 'org.codehaus.janino:janino:2.7.8', 'org.codehaus.janino:commons-compiler:2.7.8', 'org.codehaus.janino:commons-compiler-jdk:2.7.8'
     // ECJ latest works fine with Drools but is much bigger/etc and so far we are using mvel and not java dialect anyway
     // runtime 'org.eclipse.jdt.core.compiler:ecj:4.5.1'
-    compile ('org.drools:drools-decisiontables:6.4.0.Final') { // Apache 2.0
+    compile ('org.drools:drools-decisiontables:6.5.0.Final') { // Apache 2.0
         exclude group: 'org.apache.poi'
     }
     compile 'org.apache.poi:poi:3.15'

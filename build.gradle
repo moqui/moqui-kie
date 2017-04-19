@@ -65,9 +65,9 @@ dependencies {
     compile ('org.drools:drools-decisiontables:6.5.0.Final') { // Apache 2.0
         exclude group: 'org.apache.poi'
     }
-    compile 'org.apache.poi:poi:3.15'
+    compile 'org.apache.poi:poi:3.16'
     // NOTE: org.apache.poi:poi-ooxml-schemas is a required dependency for drools-decisiontables (through poi-ooxml), but it's a huge file and runs fine without it
-    compile module('org.apache.poi:poi-ooxml:3.15')
+    compile module('org.apache.poi:poi-ooxml:3.16')
 }
 
 // by default the Java plugin runs test on build, change to not do that (only run test if explicit task)

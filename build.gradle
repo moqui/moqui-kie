@@ -25,7 +25,7 @@ def frameworkDir = file(moquiDir.absolutePath + '/framework')
 apply plugin: 'com.github.ben-manes.versions'
 buildscript {
   repositories { jcenter() }
-  dependencies { classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0' }
+  dependencies { classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0' }
 }
 dependencyUpdates.resolutionStrategy = { componentSelection { rules -> rules.all { ComponentSelection selection ->
     boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier -> selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/ }
@@ -45,24 +45,24 @@ dependencies {
     compile 'jsr94:jsr94:1.1' // ???
 
     // KIE Libraries: Drools/jBPM/etc
-    compile 'org.kie:kie-api:6.5.0.Final' // Apache 2.0
-    compile 'org.drools:drools-core:6.5.0.Final' // Apache 2.0
-    compile 'org.drools:drools-jsr94:6.5.0.Final' // Apache 2.0
+    compile 'org.kie:kie-api:7.0.0.Final' // Apache 2.0
+    compile 'org.drools:drools-core:7.0.0.Final' // Apache 2.0
+    compile 'org.drools:drools-jsr94:7.0.0.Final' // Apache 2.0
     // another big mess drools-compiler depends on a bunch of stuff, including xstream which depends on xmlpull which is
     //     included in xpp3:xpp3_min, ie redundant classes; so bunch of manual dependencies
-    compile module('org.drools:drools-compiler:6.5.0.Final') // Apache 2.0
+    compile module('org.drools:drools-compiler:7.0.0.Final') // Apache 2.0
     runtime 'org.antlr:antlr-runtime:3.5.2'
     runtime 'org.mvel:mvel2:2.3.1.Final'
-    runtime module('com.thoughtworks.xstream:xstream:1.4.9')
+    runtime module('com.thoughtworks.xstream:xstream:1.4.10')
     runtime 'xpp3:xpp3_min:1.1.4c' // leave out xmlpull here
-    runtime 'com.google.protobuf:protobuf-java:3.3.0'
+    runtime 'com.google.protobuf:protobuf-java:3.3.1'
     // NOTE: drools java dialect options include ECLIPSE, JANINO, and NATIVE; NATIVE would be good but broken now with Java 8
     // using older version of Janino (2.5.16) as it is the latest version Drools supports
     runtime 'org.codehaus.janino:janino:2.5.16' // New BSD
     // 'org.codehaus.janino:janino:2.7.8', 'org.codehaus.janino:commons-compiler:2.7.8', 'org.codehaus.janino:commons-compiler-jdk:2.7.8'
     // ECJ latest works fine with Drools but is much bigger/etc and so far we are using mvel and not java dialect anyway
     // runtime 'org.eclipse.jdt.core.compiler:ecj:4.5.1'
-    compile ('org.drools:drools-decisiontables:6.5.0.Final') { // Apache 2.0
+    compile ('org.drools:drools-decisiontables:7.0.0.Final') { // Apache 2.0
         exclude group: 'org.apache.poi'
     }
     compile 'org.apache.poi:poi:3.16'

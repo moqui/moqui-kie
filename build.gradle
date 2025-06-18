@@ -59,7 +59,7 @@ dependencies {
     implementation module('org.drools:drools-compiler:7.3.0.Final') // Apache 2.0
     runtimeOnly 'org.antlr:antlr-runtime:3.5.2'
     runtimeOnly 'org.mvel:mvel2:2.3.2.Final'
-    runtimeOnly module('com.thoughtworks.xstream:xstream:1.4.10')
+    runtimeOnly module('com.thoughtworks.xstream:xstream:1.4.21')
     runtimeOnly 'xpp3:xpp3_min:1.1.4c' // leave out xmlpull here
     runtimeOnly 'com.google.protobuf:protobuf-java:3.4.0'
     // NOTE: drools java dialect options include ECLIPSE, JANINO, and NATIVE; NATIVE would be good but broken now with Java 8

@@ -61,7 +61,7 @@ dependencies {
     }// Apache 2.0
     runtimeOnly 'org.antlr:antlr-runtime:3.5.2'
     runtimeOnly 'org.mvel:mvel2:2.3.2.Final'
-    runtimeOnly('com.thoughtworks.xstream:xstream:1.4.10') {
+    runtimeOnly('com.thoughtworks.xstream:xstream:1.4.21') {
         transitive = false
     }
     runtimeOnly 'xpp3:xpp3_min:1.1.4c' // leave out xmlpull here
@@ -75,9 +75,9 @@ dependencies {
     implementation ('org.drools:drools-decisiontables:7.3.0.Final') { // Apache 2.0
         exclude group: 'org.apache.poi'
     }
-    implementation 'org.apache.poi:poi:3.17'
+    implementation 'org.apache.poi:poi:5.4.1'
     // NOTE: org.apache.poi:poi-ooxml-schemas is a required dependency for drools-decisiontables (through poi-ooxml), but it's a huge file and runs fine without it
-    implementation('org.apache.poi:poi-ooxml:3.17') {
+    implementation('org.apache.poi:poi-ooxml:5.4.1') {
         transitive = false
     }
 }

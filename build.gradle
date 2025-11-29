@@ -25,7 +25,7 @@ apply plugin: 'com.github.ben-manes.versions'
 buildscript {
     repositories {
         mavenCentral()
-        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url = "https://plugins.gradle.org/m2/" }
     }
     dependencies { classpath 'com.github.ben-manes:gradle-versions-plugin:0.42.0' }
 }
@@ -56,10 +56,14 @@ dependencies {
     implementation 'org.drools:drools-jsr94:7.2.0.Final' // Apache 2.0
     // another big mess drools-compiler depends on a bunch of stuff, including xstream which depends on xmlpull which is
     //     included in xpp3:xpp3_min, ie redundant classes; so bunch of manual dependencies
-    implementation module('org.drools:drools-compiler:7.3.0.Final') // Apache 2.0
+    implementation('org.drools:drools-compiler:7.3.0.Final') {
+        transitive = false
+    }// Apache 2.0
     runtimeOnly 'org.antlr:antlr-runtime:3.5.2'
     runtimeOnly 'org.mvel:mvel2:2.3.2.Final'
-    runtimeOnly module('com.thoughtworks.xstream:xstream:1.4.21')
+    runtimeOnly('com.thoughtworks.xstream:xstream:1.4.21') {
+        transitive = false
+    }
     runtimeOnly 'xpp3:xpp3_min:1.1.4c' // leave out xmlpull here
     runtimeOnly 'com.google.protobuf:protobuf-java:3.4.0'
     // NOTE: drools java dialect options include ECLIPSE, JANINO, and NATIVE; NATIVE would be good but broken now with Java 8
@@ -73,7 +77,9 @@ dependencies {
     }
     implementation 'org.apache.poi:poi:5.4.1'
     // NOTE: org.apache.poi:poi-ooxml-schemas is a required dependency for drools-decisiontables (through poi-ooxml), but it's a huge file and runs fine without it
-    implementation module('org.apache.poi:poi-ooxml:5.4.1')
+    implementation('org.apache.poi:poi-ooxml:5.4.1') {
+        transitive = false
+    }
 }
 
 // by default the Java plugin runs test on build, change to not do that (only run test if explicit task)
@@ -88,8 +94,12 @@ jar {
     archiveBaseName = jarBaseName
 }
 task copyDependencies { doLast {
-    copy { from (configurations.runtimeClasspath - project(':framework').configurations.runtimeClasspath - project(':framework').jar.archivePath)
-        into file(projectDir.absolutePath + '/lib') }
+    copy {
+        from (configurations.runtimeClasspath -
+              project(':framework').configurations.runtimeClasspath -
+              project(':framework').tasks.jar.archiveFile.get().asFile)
+        into file(projectDir.absolutePath + '/lib')
+    }
 } }
 copyDependencies.dependsOn cleanLib
 jar.dependsOn copyDependencies

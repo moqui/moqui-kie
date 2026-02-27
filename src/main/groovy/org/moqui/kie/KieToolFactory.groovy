@@ -14,6 +14,7 @@
 package org.moqui.kie
 
 import groovy.transform.CompileStatic
+import groovy.xml.XmlParser
 import org.kie.api.KieServices
 import org.kie.api.builder.KieBuilder
 import org.kie.api.builder.Message
